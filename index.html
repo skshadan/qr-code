@@ -7,9 +7,11 @@
 </head>
 <body>
     <video id="preview"></video>
+    <button onclick="startScanner()">Start Scanner</button>
     <script type="text/javascript" src="instascan.min.js"></script>
     <script>
         let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+
         scanner.addListener('scan', function (content) {
             fetch('https://script.google.com/macros/s/AKfycbz6dWg3Qo5Rmp0fcQQIAvbgrm01n1xPP28MOA2b9hCuWSywGf_YwO3ytSa58n9w9BWrIA/exec?data=' + encodeURIComponent(content))
                 .then(response => response.text())
@@ -17,15 +19,18 @@
                     alert(data); // This will show "Verified!" or "Not Verified!"
                 });
         });
-        Instascan.Camera.getCameras().then(function (cameras) {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
-            } else {
-                console.error('No cameras found.');
-            }
-        }).catch(function (e) {
-            console.error(e);
-        });
+
+        function startScanner() {
+            Instascan.Camera.getCameras().then(function (cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                } else {
+                    alert('No cameras found.');
+                }
+            }).catch(function (e) {
+                alert('Error: ' + e.toString());
+            });
+        }
     </script>
 </body>
 </html>
