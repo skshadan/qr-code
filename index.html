@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Verifier</title>
+</head>
+<body>
+    <video id="preview"></video>
+    <script type="text/javascript" src="https://raw.githubusercontent.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script>
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        scanner.addListener('scan', function (content) {
+            fetch('https://script.google.com/macros/s/AKfycbz6dWg3Qo5Rmp0fcQQIAvbgrm01n1xPP28MOA2b9hCuWSywGf_YwO3ytSa58n9w9BWrIA/exec?data=' + encodeURIComponent(content))
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // This will show "Verified!" or "Not Verified!"
+                });
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+    </script>
+</body>
+</html>
