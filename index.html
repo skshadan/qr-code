@@ -31,7 +31,11 @@
 
         function startScanner() {
             Instascan.Camera.getCameras().then(function (cameras) {
-                if (cameras.length > 0) {
+                if (cameras.length > 1) {
+                    // Assuming the back camera is the second one
+                    scanner.start(cameras[1]);
+                } else if (cameras.length > 0) {
+                    // If there's only one camera, just use it
                     scanner.start(cameras[0]);
                 } else {
                     alert('No cameras found.');
