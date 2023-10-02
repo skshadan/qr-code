@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Verifier</title>
+    <style>
+        #results {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <video id="preview"></video>
+    <video id="preview" width="300" height="300"></video>
     <button onclick="startScanner()">Start Scanner</button>
+    <div id="results"></div>
+
     <script type="text/javascript" src="instascan.min.js"></script>
     <script>
         let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
@@ -16,7 +25,7 @@
             fetch('https://script.google.com/macros/s/AKfycbz6dWg3Qo5Rmp0fcQQIAvbgrm01n1xPP28MOA2b9hCuWSywGf_YwO3ytSa58n9w9BWrIA/exec?data=' + encodeURIComponent(content))
                 .then(response => response.text())
                 .then(data => {
-                    alert(data); // This will show "Verified!" or "Not Verified!"
+                    document.getElementById('results').textContent = data;
                 });
         });
 
